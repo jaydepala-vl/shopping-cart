@@ -11,6 +11,7 @@ import { Typography } from "@material-ui/core";
 
 // Component
 import CartTable from '../components/cart-table';
+import CartTotal from '../components/cart-total';
 
 // API
 import { connect } from 'react-redux';
@@ -18,6 +19,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GET_USER_INFO, CHANGE_THEME } from '../services/api.service';
 
 const useStyles = makeStyles((theme) => ({
+    cartContainer: {
+        display: "flex"
+    }
 }));
 
 const Cart = () => {
@@ -28,11 +32,13 @@ const Cart = () => {
     useEffect(() => {
     }, []);
 
-    return (<Grid item xs={12}>
+    return (<Grid item xs={12} className={classes.cartContainer}>
         <Grid item xs={9}>
             <CartTable list={cart.list} />
         </Grid>
-        <Grid item xs={3}></Grid>
+        <Grid item xs={3}>
+            <CartTotal />
+        </Grid>
     </Grid>);
 };
 export default Cart;

@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'inline-block',
     },
     cartButtonGrid: {
+        color: theme.palette.text.primary,
         display: 'inline-block',
         width: '100%'
     },

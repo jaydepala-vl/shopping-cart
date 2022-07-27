@@ -14,22 +14,26 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 
 // Icons
-import Add from '@material-ui/icons/Add';
-import Remove from '@material-ui/icons/Remove';
 import Clear from '@material-ui/icons/Clear';
 import { Typography } from "@material-ui/core";
 
 // Components
 import ProductItemCounter from './product-item-counter';
 
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import TYPES from '../reducers/types';
+
+// API
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
     cartTable: {
+        backgroundColor: theme.palette.background.paper,
+        color: theme.palette.text.primary,
         minWidth: 650
     },
     tableHeader: {
+        color: theme.palette.text.primary,
         textTransform: 'capitalize'
     },
     tableTr: {
@@ -38,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
     },
     tableBody: {
         '~ td': {
+            color: theme.palette.text.primary,
             padding: theme.spacing(2),
             textAlign: "center"
         }
@@ -45,23 +50,28 @@ const useStyles = makeStyles((theme) => ({
     removeTd: {
     },
     productTd: {
+        color: theme.palette.text.primary,
         maxWidth: theme.spacing(31)
     },
     productTdContainer: {
+        color: theme.palette.text.primary,
         display: "flex",
         alignItems: "center"
     },
     productImageContainer: {
+        color: theme.palette.text.primary,
         backgroundSize: "cover",
         marginRight: theme.spacing(2)
     },
     productImage: {
+        color: theme.palette.text.primary,
         maxWidth: theme.spacing(9)
     }
 }));
 
 const CartTable = (props) => {
     const classes = useStyles();
+    const cart = useSelector(state => state.cart);
     const list = props.list;
     const dispatch = useDispatch();
 
@@ -85,9 +95,9 @@ const CartTable = (props) => {
     }
 
     return (
-        <TableContainer component={Paper}>
+        <TableContainer >
             <Table className={classes.cartTable} aria-label="simple table">
-                <TableHead>
+                <TableHead className={classes.tableTr}>
                     <TableRow>
                         <TableCell></TableCell>
                         <TableCell>
@@ -95,9 +105,21 @@ const CartTable = (props) => {
                                 Product
                             </Typography>
                         </TableCell>
-                        <TableCell align="right">Price</TableCell>
-                        <TableCell align="right">Quantity</TableCell>
-                        <TableCell align="right">Total</TableCell>
+                        <TableCell align="right">
+                            <Typography variant="h5" className={classes.tableHeader}>
+                                Price
+                            </Typography>
+                        </TableCell>
+                        <TableCell align="right">
+                            <Typography variant="h5" className={classes.tableHeader}>
+                                Quantity
+                            </Typography>
+                        </TableCell>
+                        <TableCell align="right">
+                            <Typography variant="h5" className={classes.tableHeader}>
+                                Total
+                            </Typography>
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody className={classes.tableBody}>
@@ -132,7 +154,7 @@ const CartTable = (props) => {
                                     </Grid>
                                 </Grid>
                             </TableCell>
-                            <TableCell align="right">{row.price}</TableCell>
+                            <TableCell className={classes.productTd} align="right">{row.price}</TableCell>
                             <TableCell align="right">
                                 <ProductItemCounter
                                     iconButtonSize="small"                                
@@ -141,7 +163,7 @@ const CartTable = (props) => {
                                     onRemoveItem={decreaseCount}
                                 />
                             </TableCell>
-                            <TableCell align="right">
+                            <TableCell className={classes.productTd} align="right">
                                 {(row.count * row.priceValue)} 
                             </TableCell>
                         </TableRow>
