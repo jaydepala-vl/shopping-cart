@@ -21,6 +21,11 @@ const TYPES = {
         EMPTY_ITEM: 'EMPTY_ITEM',
         ADD_ITEM_COUNT: 'ADD_ITEM_COUNT',
         REMOVE_ITEM_COUNT: 'REMOVE_ITEM_COUNT'
+    },
+
+    PRODUCTS: {
+        GET_PRODUCTS: 'GET_PRODUCTS',
+        ERROR_PRODUCTS: 'ERROR_PRODUCTS'
     }
 };
 export default TYPES;

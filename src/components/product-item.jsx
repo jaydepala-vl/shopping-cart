@@ -35,6 +35,8 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2.5),
     },
     listImageContainer: {
+        width: '200px',
+        height: '200px',
         position: 'relative',
         display: 'block',
         overflow: 'hidden',

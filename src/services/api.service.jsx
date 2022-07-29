@@ -50,3 +50,19 @@ export const UPDATE_COUNT = (num) => async dispatch => {
         })
     }
 };
+
+export const GET_PRODUCTS = () => async dispatch => {
+    try {
+        // const res = await axios.get(DOMAIN + 'users/' + (utils.getRandomInt(1, 10)));
+        const res = await axios.get('./data/products.json');
+        dispatch({
+            type: TYPES.PRODUCTS.GET_PRODUCTS,
+            payload: res.data && res.data.list
+        })
+    } catch (e) {
+        dispatch({
+            type: TYPES.PRODUCTS.ERROR_PRODUCTS,
+            payload: console.log(e)
+        })
+    }
+};
