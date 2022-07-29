@@ -55,7 +55,7 @@ const ProductContainer = (props) => {
         {
             items.map(item => (
                 <Grid key={item.id} item xs={3} className={classes.childContainer}>
-                    <ProductItem item={item} onAddItem={addItem} onRemoveItem={removeItem} />
+                    <ProductItem item={item} onAddItem={addItem} onRemoveItem={removeItem} onFavouriteClick={props.openFavouriteSidebar} />
                 </Grid>
             ))
         }

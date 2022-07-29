@@ -16,6 +16,7 @@ import TYPES from '../reducers/types';
 // Component
 import ProductCategory from '../components/product-category';
 import ProductContainer from '../components/product-container';
+import FavouritesSidebar from '../components/favourites/favourites.sidebar';
 import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,6 +41,7 @@ const Home = () => {
     const currentTheme = useSelector(state => state.theme);
     const products = useSelector(state => state.products);
     const [productList, setProductList] = useState([]);
+    const [openFavouriteSideBar, setOpenFavouriteSideBar] = useState(false);
     const classes = useStyles(currentTheme);
     const productCategoryList = [
         {
@@ -83,6 +85,10 @@ const Home = () => {
         dispatch(GET_PRODUCTS());
     };
 
+    const toggleFavouriteSidebar = (changeTo) => {
+        setOpenFavouriteSideBar(changeTo || !openFavouriteSideBar);
+    }
+
     useEffect(() => {
         getProducts();
     }, []);
@@ -100,11 +106,12 @@ const Home = () => {
                 <Grid item xs={9}>
                     {
                         productList.length > 0 && (
-                            <ProductContainer list={productList} />
+                            <ProductContainer list={productList} openFavouriteSidebar={toggleFavouriteSidebar} />
                         )
                     }
                 </Grid>
             </Grid>
+            <FavouritesSidebar list={productList} openFavouritesSideBar={openFavouriteSideBar} toggleFavouritesSideBar={toggleFavouriteSidebar} />
         </Box>);
 };
 export default Home;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // React Material Libraries
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,8 +9,9 @@ import IconButton from '@material-ui/core/IconButton';
 import { Typography } from "@material-ui/core";
 
 // Icons
-import Add from '@material-ui/icons/Add';
-import Remove from '@material-ui/icons/Remove';
+import Favorite from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+import ViewCarousel from '@material-ui/icons/ViewCarousel';
 
 // Component
 import RatingComponent from '../components/rating.component';
@@ -86,6 +87,32 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
     },
     topLeftSaleContainer: {},
+    hoverContainer: {
+        padding: theme.spacing(0),
+        position: 'absolute',
+        top: theme.spacing(0.25),
+        right: theme.spacing(0.125),
+        opacity: '0',
+        zIndex: 3,
+        visibility: 'hidden',
+        WebkitTransition: 'opacity .5s ease,visibility .5s ease,-webkit-transform .5s ease',
+        transition: 'opacity .5s ease,visibility .5s ease,transform .5s ease,-webkit-transform .5s ease',
+    },
+    hoverGroup: {
+        color: theme.palette.text.primary,
+        display: 'grid',
+        justifyContent: 'center',
+        width: '100%',
+        zIndex: '9',
+        opacity: '1',
+        visibility: 'visible'
+    },
+    selectedFavourite: {
+        color: theme.palette.error.dark
+    },
+    compareButton: {
+        color: theme.palette.text.primary,
+    },
     bottomTextContainer: {
         display: 'grid',
         textAlign: 'center'
@@ -122,11 +149,12 @@ const ProductItem = (props) => {
     const classes = useStyles();
     const cart = useSelector(state => state.cart);
     const product = props.item;
+    const [hoverButtons, setHoverButtons] = useState(false);
 
     const itemInCart = utils.itemExists(cart.list, props.item, 'id');
 
     return (<div className={classes.listContainer}>
-        <div className={classes.listCollection}>
+        <div className={classes.listCollection} onMouseOver={() => setHoverButtons(true)} onMouseOut={() => setHoverButtons(false)}>
             <Link className={classes.listImageContainer}>
                 <div className={classes.listImage} fit="width" style={{backgroundImage: 'url('+ product.img +')'}}>
                 </div>
@@ -136,6 +164,20 @@ const ProductItem = (props) => {
                 </Typography>
                 <Typography className={classes.topLeftSaleContainer}>
                 </Typography>
+            </div>
+            <div className={classes.hoverContainer} style={{opacity: hoverButtons ? 1 : 0}}>
+                <div className={classes.hoverGroup}>
+                    <Link>
+                        <IconButton  aria-label="Compare" >
+                            <ViewCarousel className={classes.compareButton} />
+                        </IconButton>
+                    </Link>
+                    <Link>
+                        <IconButton  aria-label="Add to wishlist" >
+                            <Favorite className={classes.selectedFavourite} onClick={(eve) => props.onFavouriteClick(eve)} />
+                        </IconButton>
+                    </Link>
+                </div>
             </div>
             <div className={classes.bottomTextContainer}>
                 <Grid item xs={12} className={classes.productDetailsContainer}>
