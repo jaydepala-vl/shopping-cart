@@ -85,8 +85,17 @@ const Home = () => {
         dispatch(GET_PRODUCTS());
     };
 
-    const toggleFavouriteSidebar = (changeTo) => {
-        setOpenFavouriteSideBar(changeTo || !openFavouriteSideBar);
+    const toggleFavouriteSidebar = (open) => (event) => {
+        const targetClasses = event.target && event.target.classList && event.target.classList;
+        const isBackDrop = targetClasses && targetClasses[0] && targetClasses[0].indexOf("MuiBackdrop-root") > -1;
+        if (isBackDrop || (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift'))) {
+            if (isBackDrop) {
+                setOpenFavouriteSideBar( false );
+            }
+            return;
+        }
+
+        setOpenFavouriteSideBar( open );
     }
 
     useEffect(() => {
@@ -111,7 +120,7 @@ const Home = () => {
                     }
                 </Grid>
             </Grid>
-            <FavouritesSidebar list={productList} openFavouritesSideBar={openFavouriteSideBar} toggleFavouritesSideBar={toggleFavouriteSidebar} />
+            <FavouritesSidebar openFavouritesSideBar={openFavouriteSideBar} toggleFavouritesSideBar={toggleFavouriteSidebar} />
         </Box>);
 };
 export default Home;

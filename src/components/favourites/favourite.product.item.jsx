@@ -58,7 +58,15 @@ const useStyles = makeStyles((theme) => ({
 const FavouriteProductItem = (props) => {
 
     const classes = useStyles();
+    const dispatch = useDispatch();
     const item = props.item;
+
+    const removeFromWishlistItem = (item) => {
+        dispatch({
+            type: TYPES.WISH_LIST.REMOVE_WISH_LIST_ITEM,
+            payload: item
+        });
+    }
 
     return (
         <Grid item xs={12} className={classes.productListItem}>
@@ -78,7 +86,7 @@ const FavouriteProductItem = (props) => {
                 </div>
             </Grid>
             <Grid item xs={1} className={classes.productCancelContainer}>
-                <IconButton aria-label={"Remove " + item.title} className={classes.productCancelButton}>
+                <IconButton aria-label={"Remove " + item.title} className={classes.productCancelButton} onClick={() => removeFromWishlistItem(item)}>
                     <Close />
                 </IconButton>
             </Grid>

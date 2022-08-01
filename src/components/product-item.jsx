@@ -18,9 +18,8 @@ import RatingComponent from '../components/rating.component';
 import ProductItemCounter from '../components/product-item-counter';
 
 // API
-import { connect } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
-import { GET_USER_INFO, CHANGE_THEME } from '../services/api.service';
+import TYPES from '../reducers/types';
 import utils from '../services/utils.service';
 
 const useStyles = makeStyles((theme) => ({
@@ -147,11 +146,28 @@ const useStyles = makeStyles((theme) => ({
 const ProductItem = (props) => {
 
     const classes = useStyles();
+    const dispatch = useDispatch();
     const cart = useSelector(state => state.cart);
+    const wishList = useSelector(state => state.wishlist);
     const product = props.item;
     const [hoverButtons, setHoverButtons] = useState(false);
 
     const itemInCart = utils.itemExists(cart.list, props.item, 'id');
+    const itemInWishlist = utils.itemExists(wishList.list, props.item, 'id');
+
+    const addToWishlistItem = (item) => {
+        dispatch({
+            type: TYPES.WISH_LIST.ADD_WISH_LIST_ITEM,
+            payload: item
+        });
+    }
+
+    const removeFromWishlistItem = (item) => {
+        dispatch({
+            type: TYPES.WISH_LIST.REMOVE_WISH_LIST_ITEM,
+            payload: item
+        });
+    }
 
     return (<div className={classes.listContainer}>
         <div className={classes.listCollection} onMouseOver={() => setHoverButtons(true)} onMouseOut={() => setHoverButtons(false)}>
@@ -173,9 +189,20 @@ const ProductItem = (props) => {
                         </IconButton>
                     </Link>
                     <Link>
-                        <IconButton  aria-label="Add to wishlist" >
-                            <Favorite className={classes.selectedFavourite} onClick={(eve) => props.onFavouriteClick(eve)} />
-                        </IconButton>
+                        {
+                            itemInWishlist < 0 && (
+                                <IconButton  aria-label="Add to wishlist" onClick={() => addToWishlistItem(product)}>
+                                    <FavoriteBorder className={classes.selectedFavourite} />
+                                </IconButton>
+                            )
+                        }
+                        {
+                            itemInWishlist > -1 && (
+                                <IconButton  aria-label="Remove from wishlist" onClick={() => removeFromWishlistItem(product)}>
+                                    <Favorite className={classes.selectedFavourite} />
+                                </IconButton>
+                            )
+                        }
                     </Link>
                 </div>
             </div>
